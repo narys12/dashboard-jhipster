@@ -63,10 +63,8 @@ module.exports = function (options) {
                     test: /(vendor\.css|global\.css)/,
                     loaders: ['style-loader', 'css-loader']
                 },
-                {
-                    test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
-                    loaders: ['file-loader?hash=sha512&digest=hex&name=[hash].[ext]']
-                },
+                { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+                { test: /\.(ttf|eot|png|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
                 {
                     test: /app.constants.ts$/,
                     loader: StringReplacePlugin.replace({
@@ -98,7 +96,11 @@ module.exports = function (options) {
             ]),
             new webpack.ProvidePlugin({
                 $: "jquery",
-                jQuery: "jquery"
+                jQuery: "jquery",
+                "Hammer": "hammerjs/hammer",
+                "window.$": "jquery",
+                "window.jQuery": "jquery",
+                "Hammer": "hammerjs/hammer"
             }),
             new HtmlWebpackPlugin({
                 template: './src/main/webapp/index.html',
